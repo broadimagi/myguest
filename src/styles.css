@@ -3,10 +3,14 @@
 }
 
 :root {
-  --primary-color: #3b82f6;
-  --bg-gradient: linear-gradient(135deg, #0f172a, #1e3a8a);
-  --panel-dark: rgba(15, 23, 42, 0.64);
+  --primary-color: #7dd3fc;
+  --bg-gradient:
+    radial-gradient(circle at top left, rgba(14, 116, 144, 0.22), transparent 34rem),
+    linear-gradient(135deg, #071018 0%, #101624 54%, #172033 100%);
+  --panel-dark: rgba(16, 22, 36, 0.94);
   --panel-light: rgba(255, 255, 255, 0.78);
+  --panel-line: #273149;
+  --muted-text: #9ca7b8;
   font-family: "Open Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -43,8 +47,11 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  margin: -20px -20px 0;
+  padding: 12px 20px;
   position: relative;
   z-index: 5;
+  background: rgba(16, 22, 36, 0.92);
 }
 
 .mode-pill,
@@ -52,11 +59,11 @@ button {
 .success-button,
 .checkin-panel,
 .front-stat {
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--panel-line);
   background: var(--panel-dark);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.28);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
 }
 
 .bg-light-contrast .mode-pill,
@@ -67,6 +74,36 @@ button {
   border-color: rgba(15, 23, 42, 0.12);
   background: var(--panel-light);
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+}
+
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 11px;
+}
+
+.header-title {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.header-kicker {
+  margin-top: 4px;
+  color: var(--muted-text);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .mode-pill {
@@ -120,16 +157,17 @@ button {
 
 .ghost-button {
   color: #ffffff;
+  background: rgba(16, 22, 36, 0.82);
 }
 
 .success-button {
-  color: #ffffff;
-  background: linear-gradient(135deg, #10b981, #047857);
+  color: #071018;
+  background: linear-gradient(135deg, #7dd3fc, #dbeafe);
 }
 
 .primary-button {
-  color: #ffffff;
-  background: var(--primary-color);
+  color: #071018;
+  background: linear-gradient(135deg, #7dd3fc, #dbeafe);
 }
 
 .subtle-button {
@@ -149,7 +187,7 @@ button {
 }
 
 .checkin-area {
-  width: min(100%, 500px);
+  width: min(100%, 560px);
   align-self: center;
   justify-self: center;
   display: grid;
@@ -214,32 +252,47 @@ button {
 .checkin-panel {
   display: grid;
   gap: 18px;
-  padding: 32px;
+  padding: 34px;
   border-radius: 8px;
   text-align: center;
 }
 
 .brand-mark {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #071018;
+  background: linear-gradient(135deg, #7dd3fc, #dbeafe);
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.hero-mark {
   width: 68px;
   height: 68px;
   justify-self: center;
-  border-radius: 18px;
-  object-fit: contain;
-  background: rgba(255, 255, 255, 0.92);
+  font-size: 22px;
 }
 
 .eyebrow {
-  margin: 0 0 4px;
-  font-size: 12px;
+  margin: 0 0 10px;
+  font-size: 11px;
   font-weight: 900;
-  color: var(--primary-color);
-  letter-spacing: 0.14em;
+  color: #7dd3fc;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 h1 {
   margin: 0;
-  font-size: 30px;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 0.98;
   letter-spacing: 0;
 }
 
@@ -651,12 +704,20 @@ tr:last-child td {
   .top-bar {
     align-items: stretch;
     flex-direction: column;
+    margin: -14px -14px 0;
+    padding: 12px 14px;
   }
 
   .mode-pill,
+  .header-controls,
   .top-actions,
   .top-actions button {
     width: 100%;
+  }
+
+  .header-controls {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .top-actions {

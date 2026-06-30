@@ -19,7 +19,7 @@ import "./styles.css";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzbldkFxSfXMB9n1cjhShA39_oBMdk7sAOlxhWLUjqpb2mazdRQ7MKo3K-pGMX9PJUZ5w/exec";
-const DEFAULT_THEME_COLOR = "#3b82f6";
+const DEFAULT_THEME_COLOR = "#7dd3fc";
 const ADMIN_PASSWORD = "Broadimagi";
 const RESERVED_COLUMNS = ["rowId", "Status", "Time", "UID", "status", "time"];
 
@@ -41,10 +41,16 @@ const defaultSettings = {
 
 function App() {
   const [masterlist, setMasterlist] = useState(() => getInitial("masterlist", []));
-  const [settings, setSettings] = useState(() => ({
-    ...defaultSettings,
-    ...getInitial("settings", defaultSettings)
-  }));
+  const [settings, setSettings] = useState(() => {
+    const savedSettings = {
+      ...defaultSettings,
+      ...getInitial("settings", defaultSettings)
+    };
+    if (savedSettings.currentThemeColor === "#3b82f6") {
+      savedSettings.currentThemeColor = DEFAULT_THEME_COLOR;
+    }
+    return savedSettings;
+  });
   const [deviceId, setDeviceId] = useState("");
   const [isLiveMode, setIsLiveMode] = useState(false);
   const [query, setQuery] = useState("");
@@ -138,15 +144,14 @@ function App() {
     const r = parseInt(safeHex.slice(1, 3), 16);
     const g = parseInt(safeHex.slice(3, 5), 16);
     const b = parseInt(safeHex.slice(5, 7), 16);
-    const deepBase = `rgb(${Math.round(r * 0.15) + 8}, ${Math.round(g * 0.15) + 10}, ${Math.round(b * 0.15) + 18})`;
     document.documentElement.style.setProperty("--primary-color", `rgb(${r}, ${g}, ${b})`);
     document.documentElement.style.setProperty(
       "--bg-gradient",
-      `linear-gradient(135deg, ${deepBase}, rgb(${Math.round(r * 0.6)}, ${Math.round(g * 0.6)}, ${Math.round(b * 0.6)}))`
+      `radial-gradient(circle at top left, rgba(${r}, ${g}, ${b}, 0.22), transparent 34rem), linear-gradient(135deg, #071018 0%, #101624 54%, #172033 100%)`
     );
     document.body.style.backgroundImage = "";
-    document.body.classList.toggle("bg-light-contrast", 0.299 * r + 0.587 * g + 0.114 * b > 165);
-    document.body.classList.toggle("bg-dark-contrast", 0.299 * r + 0.587 * g + 0.114 * b <= 165);
+    document.body.classList.remove("bg-light-contrast");
+    document.body.classList.add("bg-dark-contrast");
     if (persist) {
       localStorage.removeItem("customThemePicture");
       setHasImageBackground(false);
@@ -450,15 +455,24 @@ function App() {
   return (
     <main className="app-shell">
       <header className="top-bar">
-        <div className={`mode-pill ${isLiveMode ? "live" : ""}`}>{isLiveMode ? "Live" : "Local"} Mode | {deviceId}</div>
-        <nav className="top-actions" aria-label="Primary actions">
-          <button className="ghost-button icon-label" onClick={() => openModal("settings", "System Configuration")}>
-            <Settings size={18} /> Settings
-          </button>
-          <button className="success-button icon-label" onClick={() => openModal("masterlist", "Masterlist Records")}>
-            <ListChecks size={18} /> Masterlist
-          </button>
-        </nav>
+        <div className="brand-lockup">
+          <div className="brand-mark" aria-hidden="true">M</div>
+          <div>
+            <div className="header-title">myDalo Portal</div>
+            <div className="header-kicker">My Presence / My Attendance</div>
+          </div>
+        </div>
+        <div className="header-controls">
+          <div className={`mode-pill ${isLiveMode ? "live" : ""}`}>{isLiveMode ? "Live" : "Local"} Mode | {deviceId}</div>
+          <nav className="top-actions" aria-label="Primary actions">
+            <button className="ghost-button icon-label" onClick={() => openModal("settings", "System Configuration")}>
+              <Settings size={18} /> Settings
+            </button>
+            <button className="success-button icon-label" onClick={() => openModal("masterlist", "Masterlist Records")}>
+              <ListChecks size={18} /> Masterlist
+            </button>
+          </nav>
+        </div>
       </header>
 
       <section className="checkin-area" aria-labelledby="checkin-title">
@@ -471,10 +485,10 @@ function App() {
           </div>
         )}
         <div className="checkin-panel">
-          <img src="/broadimagi.png" alt="" className="brand-mark" />
+          <div className="brand-mark hero-mark" aria-hidden="true">M</div>
           <div>
-            <p className="eyebrow">inDalo</p>
-            <h1 id="checkin-title">Guest Check-In</h1>
+            <p className="eyebrow">myDalo</p>
+            <h1 id="checkin-title">My Presence / My Attendance</h1>
           </div>
           <form onSubmit={checkName} className="search-form">
             <div className="search-box">
